@@ -12,7 +12,7 @@ def ols_normal_eq(X, y, add_intercept=True, l2=0.0):
       l2 : non-negative float for ridge-style stabilization (0.0 means pure OLS)
 
   Returns:
-      beta : (d',) estimated coefficients (including intercept if used)
+      beta : (d,) estimated coefficients (including intercept if used)
       y_hat : (n,) fitted values
       residuals : (n,) y - y_hat
   """
@@ -22,7 +22,7 @@ def ols_normal_eq(X, y, add_intercept=True, l2=0.0):
   if add_intercept:
       X = np.hstack([np.ones((n, 1)), X])
 
-  A = X.T @ X + l2 * np.identity(n, dtype=X.dtype)
+  A = X.T @ X + l2 * np.identity(d + 1 if add_intercept else d, dtype=X.dtype)
   beta = np.linalg.solve(A, X.T @ y)
   y_hat = X @ beta
   residuals = y - y_hat
